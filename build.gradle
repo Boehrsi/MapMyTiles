@@ -4,7 +4,7 @@ version '0.1-SNAPSHOT'
 apply plugin: 'java'
 
 ext {
-    gdxVersion = '1.6.5'
+    gdxVersion = '1.9.4'
 }
 
 repositories {
