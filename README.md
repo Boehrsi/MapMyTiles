@@ -18,7 +18,7 @@ allprojects {
 }
 ```
 
-Add to your project root build.gradle file.
+Add to your project build.gradle file.
 
 ```
 dependencies {
