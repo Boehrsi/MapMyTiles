@@ -29,3 +29,7 @@ dependencies {
 ## Features
 
 * tbd
+
+## Links
+ * [Tiled Map Editor](http://www.mapeditor.org/) - Your free, easy to use and flexible tile map editor. 
+ * [libGDX](https://libgdx.badlogicgames.com/) - Desktop/Android/BlackBerry/iOS/HTML5 Java game development framework
