@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 class Colliders {
-    List<ColliderBound> list = new ArrayList<>();
+    private List<ColliderBound> list = new ArrayList<>();
 
     private boolean foundCollider = false;
 
@@ -63,6 +63,10 @@ class Colliders {
 
     void destroy() {
         list.clear();
+    }
+
+    List<ColliderBound> getList() {
+        return list;
     }
 
     private void saveColliderPart(boolean foundCollider, ColliderBound locatedCollider) {

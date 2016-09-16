@@ -10,7 +10,7 @@ import de.boehrsi.mapmytiles.entities.LocatedEntity;
 import java.util.List;
 
 @SuppressWarnings("unused")
-public class MapMyTiles {
+public class TileMapper {
     private TiledMap tiledMap;
     private OrthogonalTiledMapRenderer tiledMapRenderer;
     private Colliders colliders = new Colliders();
@@ -19,13 +19,13 @@ public class MapMyTiles {
     private int tileCountHeight;
     private int tileSize;
 
-    public MapMyTiles(String mapName, int tileCountWidth, int tileCountHeight, int tileSize, float scalePtm) {
+    public TileMapper(String mapName, int tileCountWidth, int tileCountHeight, int tileSize, float scalePtm) {
         tiledMap = new TmxMapLoader().load(mapName);
         tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap, scalePtm);
         initSizes(tileCountWidth, tileCountHeight, tileSize);
     }
 
-    public MapMyTiles(OrthogonalTiledMapRenderer tiledMapRenderer, int tileCountWidth, int tileCountHeight,
+    public TileMapper(OrthogonalTiledMapRenderer tiledMapRenderer, int tileCountWidth, int tileCountHeight,
                       int tileSize) {
         tiledMap = tiledMapRenderer.getMap();
         this.tiledMapRenderer = tiledMapRenderer;
@@ -57,11 +57,23 @@ public class MapMyTiles {
     }
 
     public List<ColliderBound> getColliderList() {
-        return colliders.list;
+        return colliders.getList();
     }
 
     public List<LocatedEntity<?>> getEntityList() {
-        return entities.list;
+        return entities.getList();
+    }
+
+    public List<LocatedEntity<?>> getEntityList(String layerName) {
+        return entities.getList(layerName);
+    }
+
+    public void removeLayer(String layerName) {
+        entities.removeLayer(layerName);
+    }
+
+    public void removeEntity(LocatedEntity<?> locatedEntity) {
+        entities.removeEntity(locatedEntity);
     }
 
     public TiledMapTileLayer getTileMapTileLayer(String layerName) {
