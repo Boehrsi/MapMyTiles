@@ -4,10 +4,7 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import de.boehrsi.mapmytiles.entities.LocatedEntity;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 class Entities {
 
@@ -36,7 +33,7 @@ class Entities {
         if (tempList != null) {
             tempList.add(locatedEntity);
         } else {
-            tempList = Collections.singletonList(locatedEntity);
+            tempList = new ArrayList<>(Collections.singletonList(locatedEntity));
         }
         mappedLists.put(layerName, tempList);
     }
