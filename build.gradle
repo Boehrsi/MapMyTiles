@@ -17,7 +17,6 @@ dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.11'
 }
 
-// To specify a license in the pom:
 install {
     repositories.mavenInstaller {
         pom.project {
@@ -31,3 +30,13 @@ install {
         }
     }
 }
+
+task sourcesJar(type: Jar, dependsOn: classes) {
+    classifier = 'sources'
+    from sourceSets.main.allSource
+}
+
+artifacts {
+    archives sourcesJar
+}
+
