@@ -25,11 +25,11 @@ public class TileMapper {
     /**
      * Initializes the {@link TileMapper}
      *
-     * @param mapName Name of the layer within the Tiled map
-     * @param tileCountWidth Number of tiles defining the width
+     * @param mapName         Name of the layer within the Tiled map
+     * @param tileCountWidth  Number of tiles defining the width
      * @param tileCountHeight Number of tiles defining the height
-     * @param tileSize Width and height of one tile
-     * @param scalePtm Scale parameter for PTM (Pixel to Meter) conversion
+     * @param tileSize        Width and height of one tile
+     * @param scalePtm        Scale parameter for PTM (Pixel to Meter) conversion
      */
     public TileMapper(String mapName, int tileCountWidth, int tileCountHeight, int tileSize, float scalePtm) {
         tiledMap = new TmxMapLoader().load(mapName);
@@ -41,9 +41,9 @@ public class TileMapper {
      * Initializes the {@link TileMapper}
      *
      * @param tiledMapRenderer Already defined {@link OrthogonalTiledMapRenderer}
-     * @param tileCountWidth Number of tiles defining the width
-     * @param tileCountHeight Number of tiles defining the height
-     * @param tileSize Width and height of one tile
+     * @param tileCountWidth   Number of tiles defining the width
+     * @param tileCountHeight  Number of tiles defining the height
+     * @param tileSize         Width and height of one tile
      */
     public TileMapper(OrthogonalTiledMapRenderer tiledMapRenderer, int tileCountWidth, int tileCountHeight,
                       int tileSize) {
@@ -76,7 +76,7 @@ public class TileMapper {
      * If this is needed use the addEntityLayer(T entity, String layerName, boolean centered) method. The entities are represented as a {@link List} of {@link LocatedEntity} objects.
      *
      * @param layerName Name of the layer within the Tiled map
-     * @param centered Should the object be located in the middle of the tile, otherwise it will be located in the bottom left
+     * @param centered  Should the object be located in the middle of the tile, otherwise it will be located in the bottom left
      */
     public void addEntityLayer(String layerName, boolean centered) {
         addEntityLayer(null, layerName, centered);
@@ -87,10 +87,10 @@ public class TileMapper {
      * This allows the management of in game objects directly by using the entities list from this class.
      * The entities are represented as a {@link List} of {@link LocatedEntity} objects.
      *
-     * @param entity Object that should get directly bound to the {@link LocatedEntity}
+     * @param entity    Object that should get directly bound to the {@link LocatedEntity}
      * @param layerName Name of the layer within the Tiled map
-     * @param centered Should the object be located in the middle of the tile, otherwise it will be located in the bottom left
-     * @param <T> Type of entity
+     * @param centered  Should the object be located in the middle of the tile, otherwise it will be located in the bottom left
+     * @param <T>       Type of entity
      */
     @SuppressWarnings("WeakerAccess")
     public <T> void addEntityLayer(T entity, String layerName, boolean centered) {
@@ -128,7 +128,7 @@ public class TileMapper {
      * Get all entities on a specific layer
      *
      * @param layerName The layer which should get checked
-     * @return  The list of all added entities on the specified layers
+     * @return The list of all added entities on the specified layers
      */
     public List<LocatedEntity<?>> getEntityList(String layerName) {
         return entities.getList(layerName);
