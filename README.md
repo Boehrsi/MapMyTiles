@@ -22,9 +22,13 @@ Add to your project build.gradle file.
 
 ```
 dependencies {
-	compile 'com.github.Boehrsi:MapMyTiles:0.2'
+	compile 'com.github.Boehrsi:MapMyTiles:0.2.1'
 }
 ```
+
+### JavaDocs
+
+https://jitpack.io/com/github/boehrsi/mapmytiles/0.2.1/javadoc/
 
 ## Features
 
