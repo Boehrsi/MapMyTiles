@@ -22,7 +22,7 @@ Add to your project build.gradle file.
 
 ```
 dependencies {
-	compile 'com.github.Boehrsi:MapMyTiles:0.1'
+	compile 'com.github.Boehrsi:MapMyTiles:0.2'
 }
 ```
 
