@@ -1,5 +1,5 @@
 group = 'com.github.Boehrsi'
-version '0.2'
+version '0.3'
 
 apply plugin: 'java'
 apply plugin: 'maven'
@@ -14,6 +14,7 @@ repositories {
 
 dependencies {
     compile "com.badlogicgames.gdx:gdx-backend-lwjgl:$gdxVersion"
+    compile "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"
     testCompile group: 'junit', name: 'junit', version: '4.11'
 }
 

@@ -3,7 +3,8 @@ Easily use your **Tiled** maps in **libgdx** to create new levels without a hass
 
 ## How to use
 
-Just include the following dependencies.
+Just include the following dependencies. But be aware until version 1.0, which 
+hopefully is ready until december 2016, the whole code possibly change drastically.
 
 ### Gradle
 
@@ -22,11 +23,15 @@ Add to your project build.gradle file.
 
 ```
 dependencies {
-	compile 'com.github.Boehrsi:MapMyTiles:0.2'
+	compile 'com.github.Boehrsi:MapMyTiles:0.3'
 }
 ```
 
 ## Features
+
+* tbd
+
+## Tests
 
 * tbd
 

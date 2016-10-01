@@ -2,39 +2,40 @@ package de.boehrsi.mapmytiles.core;
 
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
-import de.boehrsi.mapmytiles.entities.ColliderBound;
+import com.badlogic.gdx.physics.box2d.World;
+import de.boehrsi.mapmytiles.entities.StaticCollider;
 
 import java.util.ArrayList;
 import java.util.List;
 
 class Colliders {
-    private List<ColliderBound> list = new ArrayList<>();
+    private List<StaticCollider> list = new ArrayList<>();
 
     private boolean foundCollider = false;
 
-    void create(TiledMap tiledMap, String colliderLayerName, int width, int height) {
+    void create(TiledMap tiledMap, String colliderLayerName, int width, int height, World world) {
         TiledMapTileLayer colliderLayer = (TiledMapTileLayer) tiledMap.getLayers().get(colliderLayerName);
 
-        ColliderBound colliderBound = null;
+        StaticCollider staticCollider = null;
 
         // Create collider list and connect x axis objects
         for (int countY = 0; countY <= height; countY++) {
-            saveColliderPart(foundCollider, colliderBound);
+            saveColliderPart(foundCollider, staticCollider);
             for (int countX = 0; countX <= width; countX++) {
                 if (colliderLayer.getCell(countX, countY) != null) {
                     // Found new cell
                     if (!foundCollider) {
-                        colliderBound = new ColliderBound(countX, countY, 1, 1);
+                        staticCollider = new StaticCollider(countX, countY, 1, 1, world);
                         foundCollider = true;
                     }
                     // Found next cell
                     else {
-                        if (colliderBound != null) {
-                            colliderBound.incrementWidth();
+                        if (staticCollider != null) {
+                            staticCollider.incrementWidth();
                         }
                     }
                 } else {
-                    saveColliderPart(foundCollider, colliderBound);
+                    saveColliderPart(foundCollider, staticCollider);
                 }
             }
         }
@@ -61,15 +62,24 @@ class Colliders {
         }
     }
 
+    void add() {
+        for (StaticCollider collider : list) {
+            collider.createBody();
+        }
+    }
+
     void destroy() {
+        for (StaticCollider collider : list) {
+            collider.destroyBody();
+        }
         list.clear();
     }
 
-    List<ColliderBound> getList() {
+    List<StaticCollider> getList() {
         return list;
     }
 
-    private void saveColliderPart(boolean foundCollider, ColliderBound locatedCollider) {
+    private void saveColliderPart(boolean foundCollider, StaticCollider locatedCollider) {
         if (foundCollider) {
             list.add(locatedCollider);
             this.foundCollider = false;

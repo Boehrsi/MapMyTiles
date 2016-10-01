@@ -4,7 +4,8 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
-import de.boehrsi.mapmytiles.entities.ColliderBound;
+import com.badlogic.gdx.physics.box2d.World;
+import de.boehrsi.mapmytiles.entities.StaticCollider;
 import de.boehrsi.mapmytiles.entities.LocatedEntity;
 
 import java.util.List;
@@ -21,6 +22,7 @@ public class TileMapper {
     private int tileCountWidth;
     private int tileCountHeight;
     private int tileSize;
+    private World world;
 
     /**
      * Initializes the {@link TileMapper}
@@ -30,11 +32,13 @@ public class TileMapper {
      * @param tileCountHeight Number of tiles defining the height
      * @param tileSize        Width and height of one tile
      * @param scalePtm        Scale parameter for PTM (Pixel to Meter) conversion
+     * @param world           Box2d world of the tilemap
      */
-    public TileMapper(String mapName, int tileCountWidth, int tileCountHeight, int tileSize, float scalePtm) {
+    public TileMapper(String mapName, int tileCountWidth, int tileCountHeight, int tileSize, float scalePtm, World world) {
         tiledMap = new TmxMapLoader().load(mapName);
         tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap, scalePtm);
         initSizes(tileCountWidth, tileCountHeight, tileSize);
+        this.world = world;
     }
 
     /**
@@ -44,12 +48,14 @@ public class TileMapper {
      * @param tileCountWidth   Number of tiles defining the width
      * @param tileCountHeight  Number of tiles defining the height
      * @param tileSize         Width and height of one tile
+     * @param world            Box2d world of the tilemap
      */
     public TileMapper(OrthogonalTiledMapRenderer tiledMapRenderer, int tileCountWidth, int tileCountHeight,
-                      int tileSize) {
+                      int tileSize, World world) {
         tiledMap = tiledMapRenderer.getMap();
         this.tiledMapRenderer = tiledMapRenderer;
         initSizes(tileCountWidth, tileCountHeight, tileSize);
+        this.world = world;
     }
 
     /**
@@ -63,12 +69,12 @@ public class TileMapper {
     }
 
     /**
-     * Add the colliders to the map. The colliders are represented as a {@link List} of {@link ColliderBound} objects.
+     * Add the colliders to the map. The colliders are represented as a {@link List} of {@link StaticCollider} objects.
      *
      * @param colliderLayerName Name of the layer within the Tiled map
      */
     public void buildColliders(String colliderLayerName) {
-        colliders.create(tiledMap, colliderLayerName, tileCountWidth, tileCountHeight);
+        colliders.create(tiledMap, colliderLayerName, tileCountWidth, tileCountHeight, world);
     }
 
     /**
@@ -111,7 +117,7 @@ public class TileMapper {
      *
      * @return The list of all created colliders.
      */
-    public List<ColliderBound> getColliderList() {
+    public List<StaticCollider> getColliderList() {
         return colliders.getList();
     }
 

@@ -1,24 +1,45 @@
 package de.boehrsi.mapmytiles.entities;
 
-public class ColliderBound {
+import com.badlogic.gdx.physics.box2d.*;
+
+public class StaticCollider {
     private int x;
     private int y;
     private int width;
     private int height;
+    private Body body;
+    private World world;
 
     /**
-     * Initializes a {@link ColliderBound} object
+     * Initializes a {@link StaticCollider} object
      *
      * @param x      Tile coordinates for the horizontal position
      * @param y      Tile coordinates for the vertical position
      * @param width  Width of the collider as tile size
      * @param height Height of the collider as tile size
+     * @param world  The world which the collider belongs to
      */
-    public ColliderBound(int x, int y, int width, int height) {
+    public StaticCollider(int x, int y, int width, int height, World world) {
         this.x = x;
         this.y = y;
         this.width = width;
         this.height = height;
+        this.world = world;
+    }
+
+    private void createBody(boolean reset) {
+        if (reset) {
+            destroyBody();
+        }
+        BodyDef bodyDef = new BodyDef();
+        bodyDef.type = BodyDef.BodyType.StaticBody;
+        bodyDef.position.set(x, y);
+        body = world.createBody(bodyDef);
+        PolygonShape shape = new PolygonShape();
+        shape.setAsBox(width / 2, height / 2);
+        FixtureDef fixtureDef = new FixtureDef();
+        fixtureDef.shape = shape;
+        body.createFixture(fixtureDef).setUserData("staticCollider");
     }
 
     /**
@@ -105,6 +126,30 @@ public class ColliderBound {
      */
     public void incrementHeight() {
         height++;
+    }
+
+    /*
+    * Creates the body and adds it to the world, if it wasn't created before.
+    * The user data of the fixture is set to staticCollider
+    */
+    public void createBody() {
+        createBody(false);
+    }
+
+    /*
+    * Recreates the body and adds it to the world, if it was already created.
+    * The user data of the fixture is set to staticCollider
+    */
+    public void recreateBody() {
+        createBody(true);
+    }
+
+    /**
+     * Destroys the body and removes it from the world
+     */
+    public void destroyBody() {
+        world.destroyBody(body);
+        body = null;
     }
 
 }
