@@ -62,9 +62,9 @@ class Colliders {
         }
     }
 
-    void add() {
+    void add(int tileSize) {
         for (StaticCollider collider : list) {
-            collider.createBody();
+            collider.createBody(tileSize);
         }
     }
 

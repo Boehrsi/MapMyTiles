@@ -81,7 +81,7 @@ public class TileMapper {
      * Adds the colliders to the map. The colliders must have been build before by the  buildColliders(String colliderLayerName) method.
      */
     public void addColliders() {
-        colliders.add();
+        colliders.add(tileSize);
     }
 
     /**
