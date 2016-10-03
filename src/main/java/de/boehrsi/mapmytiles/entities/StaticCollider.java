@@ -27,16 +27,16 @@ public class StaticCollider {
         this.world = world;
     }
 
-    private void createBody(boolean reset, int tileSize) {
+    private void createBody(boolean reset, int tileSize, float scalePtm) {
         if (reset) {
             destroyBody();
         }
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.StaticBody;
-        bodyDef.position.set(x * tileSize, y * tileSize);
+        bodyDef.position.set((x * tileSize + (width * tileSize / 2)) / scalePtm, (y * tileSize + (height * tileSize / 2)) / scalePtm);
         body = world.createBody(bodyDef);
         PolygonShape shape = new PolygonShape();
-        shape.setAsBox(width * tileSize, height * tileSize);
+        shape.setAsBox(width * tileSize / 2 /scalePtm, height * tileSize / 2 / scalePtm);
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = shape;
         body.createFixture(fixtureDef).setUserData("staticCollider");
@@ -132,16 +132,16 @@ public class StaticCollider {
     * Creates the body and adds it to the world, if it wasn't created before.
     * The user data of the fixture is set to staticCollider
     */
-    public void createBody(int tileSize) {
-        createBody(false, tileSize);
+    public void createBody(int tileSize, float scalePtm) {
+        createBody(false, tileSize, scalePtm);
     }
 
     /*
     * Recreates the body and adds it to the world, if it was already created.
     * The user data of the fixture is set to staticCollider
     */
-    public void recreateBody(int tileSize) {
-        createBody(true, tileSize);
+    public void recreateBody(int tileSize, float scalePtm) {
+        createBody(true, tileSize, scalePtm);
     }
 
     /**
