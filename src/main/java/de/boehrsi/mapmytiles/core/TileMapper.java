@@ -69,12 +69,19 @@ public class TileMapper {
     }
 
     /**
-     * Add the colliders to the map. The colliders are represented as a {@link List} of {@link StaticCollider} objects.
+     * Calculates the colliders for the map. The colliders are represented as a {@link List} of {@link StaticCollider} objects.
      *
      * @param colliderLayerName Name of the layer within the Tiled map
      */
     public void buildColliders(String colliderLayerName) {
         colliders.create(tiledMap, colliderLayerName, tileCountWidth, tileCountHeight, world);
+    }
+
+    /**
+     * Adds the colliders to the map. The colliders must have been build before by the  buildColliders(String colliderLayerName) method.
+     */
+    public void addColliders() {
+        colliders.add();
     }
 
     /**
