@@ -4,16 +4,17 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.physics.box2d.Shape;
 import com.badlogic.gdx.physics.box2d.World;
-import de.boehrsi.mapmytiles.entities.StaticCollider;
+import de.boehrsi.mapmytiles.entities.BodyProvider;
 import de.boehrsi.mapmytiles.entities.LocatedEntity;
+import de.boehrsi.mapmytiles.entities.StaticCollider;
 
 import java.util.List;
 
 /**
  * Main class for tile to java mapping. Gives you access to all created entities and colliders.
  */
-@SuppressWarnings("unused")
 public class TileMapper {
     private TiledMap tiledMap;
     private OrthogonalTiledMapRenderer tiledMapRenderer;
@@ -80,36 +81,45 @@ public class TileMapper {
     }
 
     /**
-     * Adds the colliders to the map. The colliders must have been build before by the  buildColliders(String colliderLayerName) method.
+     * Adds the colliders to the map. The colliders must have been build before by the buildColliders(String colliderLayerName) method.
      */
     public void addColliders() {
         colliders.add(tileSize, scalePtm);
     }
 
     /**
-     * Add an entity layer to the map. This will create an object with position data, but without any information about the object which should get drawn within the game.
-     * If this is needed use the addEntityLayer(T entity, String layerName, boolean centered) method. The entities are represented as a {@link List} of {@link LocatedEntity} objects.
+     * Builds an entity layer with positions relative to the map. This will create an object with position data, but without any information about the object which should get drawn within the game.
+     * If this is needed use the buildEntityLayer(T entity, String layerName, boolean centered) method. The entities are represented as a {@link List} of {@link LocatedEntity} objects.
      *
      * @param layerName Name of the layer within the Tiled map
      * @param centered  Should the object be located in the middle of the tile, otherwise it will be located in the bottom left
      */
-    public void addEntityLayer(String layerName, boolean centered) {
-        addEntityLayer(null, layerName, centered);
+    public void buildEntityLayer(String layerName, boolean centered) {
+        buildEntityLayer(null, layerName, centered);
     }
 
     /**
-     * Add an entity layer to the map. This method creates an object with position data and information about the to be drawn object.
+     * Builds an entity layer with positions relative to the map. This method creates an object with position data and information about the to be drawn object.
      * This allows the management of in game objects directly by using the entities list from this class.
      * The entities are represented as a {@link List} of {@link LocatedEntity} objects.
      *
      * @param entity    Object that should get directly bound to the {@link LocatedEntity}
      * @param layerName Name of the layer within the Tiled map
      * @param centered  Should the object be located in the middle of the tile, otherwise it will be located in the bottom left
-     * @param <T>       Type of entity
+     * @param entity    Entity to be drawn
      */
     @SuppressWarnings("WeakerAccess")
-    public <T> void addEntityLayer(T entity, String layerName, boolean centered) {
-        entities.add(tiledMap, layerName, entity, tileCountWidth, tileCountHeight, tileSize, centered);
+    public void buildEntityLayer(BodyProvider entity, String layerName, boolean centered) {
+        entities.build(tiledMap, layerName, entity, tileCountWidth, tileCountHeight, tileSize, centered);
+    }
+
+    /**
+     * Adds the the objects to the world.
+     *
+     * @param world World which should be the parent of the entity.
+     */
+    public void addEntityLayer(World world) {
+        entities.add(world);
     }
 
     /**
@@ -135,7 +145,7 @@ public class TileMapper {
      *
      * @return The list of all added entities on all layers
      */
-    public List<LocatedEntity<?>> getEntityList() {
+    public List<LocatedEntity> getEntityList() {
         return entities.getList();
     }
 
@@ -145,7 +155,7 @@ public class TileMapper {
      * @param layerName The layer which should get checked
      * @return The list of all added entities on the specified layers
      */
-    public List<LocatedEntity<?>> getEntityList(String layerName) {
+    public List<LocatedEntity> getEntityList(String layerName) {
         return entities.getList(layerName);
     }
 
@@ -163,7 +173,7 @@ public class TileMapper {
      *
      * @param locatedEntity The entity which should get removed
      */
-    public void removeEntity(LocatedEntity<?> locatedEntity) {
+    public void removeEntity(LocatedEntity locatedEntity) {
         entities.removeEntity(locatedEntity);
     }
 

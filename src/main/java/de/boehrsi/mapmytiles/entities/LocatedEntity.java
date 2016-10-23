@@ -2,13 +2,11 @@ package de.boehrsi.mapmytiles.entities;
 
 /**
  * Entity with position information. If given by the user also the to be drawn object is referenced.
- *
- * @param <T> The type of the to be drawn object
  */
-public class LocatedEntity<T> {
+public class LocatedEntity {
     private int x;
     private int y;
-    private T entity;
+    private BodyProvider entity;
     private String layerName;
 
     /**
@@ -30,7 +28,7 @@ public class LocatedEntity<T> {
      * @param entity    The entity which should get drawn
      * @param layerName Name of the layer within the Tiled map
      */
-    public LocatedEntity(int x, int y, T entity, String layerName) {
+    public LocatedEntity(int x, int y, BodyProvider entity, String layerName) {
         this.x = x;
         this.y = y;
         this.entity = entity;
@@ -60,7 +58,7 @@ public class LocatedEntity<T> {
      *
      * @return The entity
      */
-    public T getEntity() {
+    public BodyProvider getEntity() {
         return entity;
     }
 
@@ -69,7 +67,7 @@ public class LocatedEntity<T> {
      *
      * @param entity The entity of a user specific type
      */
-    public void setEntity(T entity) {
+    public void setEntity(BodyProvider entity) {
         this.entity = entity;
     }
 
