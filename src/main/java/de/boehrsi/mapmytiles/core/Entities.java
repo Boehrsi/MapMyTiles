@@ -2,13 +2,14 @@ package de.boehrsi.mapmytiles.core;
 
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
-import com.badlogic.gdx.physics.box2d.Shape;
 import com.badlogic.gdx.physics.box2d.World;
 import de.boehrsi.mapmytiles.entities.BodyProvider;
 import de.boehrsi.mapmytiles.entities.LocatedEntity;
-import sun.security.provider.SHA;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
 
 class Entities {
 
@@ -16,29 +17,29 @@ class Entities {
 
     private HashMap<String, List<LocatedEntity>> mappedLists = new HashMap<>();
 
-    void build(TiledMap tiledMap, String layerName, BodyProvider entity, int tileCountWidth, int tileCountHeight,
-                   int tileSize, boolean centered) {
+    void init(TiledMap tiledMap, BodyProvider entity, String layerName, int tileCountWidth, int tileCountHeight,
+              int tileSize, boolean centered) {
         TiledMapTileLayer layer = (TiledMapTileLayer) tiledMap.getLayers().get(layerName);
         for (int x = 0; x < tileCountWidth; x++) {
             for (int y = 0; y < tileCountHeight; y++) {
                 if (layer.getCell(x, y) != null) {
                     int calculatedX = calcSize(x, tileSize, centered);
                     int calculatedY = calcSize(y, tileSize, centered);
-                    buildEntity(layerName, entity, calculatedX, calculatedY);
+                    initEntity(layerName, entity, calculatedX, calculatedY);
                 }
             }
         }
     }
 
-    void add(World world) {
+    void create(World world) {
         for (LocatedEntity locatedEntity : list) {
-            BodyProvider bodyProvider = locatedEntity.getEntity();
+            BodyProvider bodyProvider = locatedEntity.getBodyProvider();
             bodyProvider.create(world, locatedEntity.getX(), locatedEntity.getY());
         }
     }
 
-    private void buildEntity(String layerName, BodyProvider entity, int calculatedX, int calculatedY) {
-        LocatedEntity locatedEntity = new LocatedEntity(calculatedX, calculatedY, entity, layerName);
+    private void initEntity(String layerName, BodyProvider entity, int calculatedX, int calculatedY) {
+        LocatedEntity locatedEntity = new LocatedEntity(calculatedX, calculatedY, entity.clone(), layerName);
         list.add(locatedEntity);
         List<LocatedEntity> tempList = mappedLists.get(layerName);
         if (tempList != null) {
@@ -63,6 +64,19 @@ class Entities {
         mappedLists.remove(layerName);
     }
 
+    void destroyEntity(World world, LocatedEntity locatedEntity) {
+        world.destroyBody(locatedEntity.getBodyProvider().getBody());
+        removeEntity(locatedEntity);
+    }
+
+    void destroyLayer(World world, String layerName) {
+        List<LocatedEntity> tempList = mappedLists.get(layerName);
+        for(LocatedEntity tempEntity : tempList) {
+            world.destroyBody(tempEntity.getBodyProvider().getBody());
+        }
+        removeLayer(layerName);
+    }
+
     List<LocatedEntity> getList() {
         return list;
     }
@@ -78,7 +92,7 @@ class Entities {
         return value * tileSize;
     }
 
-    void destroy() {
+    void clear() {
         list.clear();
     }
 

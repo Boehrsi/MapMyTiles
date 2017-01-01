@@ -6,7 +6,7 @@ package de.boehrsi.mapmytiles.entities;
 public class LocatedEntity {
     private int x;
     private int y;
-    private BodyProvider entity;
+    private BodyProvider bodyProvider;
     private String layerName;
 
     /**
@@ -25,13 +25,13 @@ public class LocatedEntity {
      *
      * @param x         World coordinates in pixel for the horizontal position
      * @param y         World coordinates in pixel for the vertical position
-     * @param entity    The entity which should get drawn
+     * @param bodyProvider    The bodyProvider which should get drawn
      * @param layerName Name of the layer within the Tiled map
      */
-    public LocatedEntity(int x, int y, BodyProvider entity, String layerName) {
+    public LocatedEntity(int x, int y, BodyProvider bodyProvider, String layerName) {
         this.x = x;
         this.y = y;
-        this.entity = entity;
+        this.bodyProvider = bodyProvider;
         this.layerName = layerName;
     }
 
@@ -54,21 +54,21 @@ public class LocatedEntity {
     }
 
     /**
-     * Get the entity which should get drawn.
+     * Get the bodyProvider which should get drawn.
      *
-     * @return The entity
+     * @return The bodyProvider
      */
-    public BodyProvider getEntity() {
-        return entity;
+    public BodyProvider getBodyProvider() {
+        return bodyProvider;
     }
 
     /**
-     * Set the entity which should be drawn.
+     * Set the bodyProvider which should be drawn.
      *
-     * @param entity The entity of a user specific type
+     * @param bodyProvider The bodyProvider of a user specific type
      */
-    public void setEntity(BodyProvider entity) {
-        this.entity = entity;
+    public void setBodyProvider(BodyProvider bodyProvider) {
+        this.bodyProvider = bodyProvider;
     }
 
     /**

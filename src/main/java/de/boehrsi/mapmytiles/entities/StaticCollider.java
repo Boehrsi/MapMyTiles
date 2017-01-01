@@ -11,7 +11,8 @@ public class StaticCollider {
     private World world;
 
     /**
-     * Initializes a {@link StaticCollider} object
+     * Initializes a {@link StaticCollider} object. All StaticCollider objects can be identified by the custom user
+     * data automatically set by body.createFixture(fixtureDef).setUserData("staticCollider");
      *
      * @param x      Tile coordinates for the horizontal position
      * @param y      Tile coordinates for the vertical position

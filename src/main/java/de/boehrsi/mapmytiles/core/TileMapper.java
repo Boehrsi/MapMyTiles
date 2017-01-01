@@ -4,7 +4,6 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
-import com.badlogic.gdx.physics.box2d.Shape;
 import com.badlogic.gdx.physics.box2d.World;
 import de.boehrsi.mapmytiles.entities.BodyProvider;
 import de.boehrsi.mapmytiles.entities.LocatedEntity;
@@ -68,7 +67,7 @@ public class TileMapper {
         tiledMap.dispose();
         tiledMapRenderer.dispose();
         colliders.destroy();
-        entities.destroy();
+        entities.clear();
     }
 
     /**
@@ -76,26 +75,26 @@ public class TileMapper {
      *
      * @param colliderLayerName Name of the layer within the Tiled map
      */
-    public void buildColliders(String colliderLayerName) {
+    public void initColliders(String colliderLayerName) {
         colliders.create(tiledMap, colliderLayerName, tileCountWidth, tileCountHeight, world);
     }
 
     /**
-     * Adds the colliders to the map. The colliders must have been build before by the buildColliders(String colliderLayerName) method.
+     * Adds the colliders to the map. The colliders must have been init before by the initColliders(String colliderLayerName) method.
      */
-    public void addColliders() {
+    public void createColliders() {
         colliders.add(tileSize, scalePtm);
     }
 
     /**
      * Builds an entity layer with positions relative to the map. This will create an object with position data, but without any information about the object which should get drawn within the game.
-     * If this is needed use the buildEntityLayer(T entity, String layerName, boolean centered) method. The entities are represented as a {@link List} of {@link LocatedEntity} objects.
+     * If this is needed use the initEntityLayer(T entity, String layerName, boolean centered) method. The entities are represented as a {@link List} of {@link LocatedEntity} objects.
      *
      * @param layerName Name of the layer within the Tiled map
      * @param centered  Should the object be located in the middle of the tile, otherwise it will be located in the bottom left
      */
-    public void buildEntityLayer(String layerName, boolean centered) {
-        buildEntityLayer(null, layerName, centered);
+    public void initEntityLayer(String layerName, boolean centered) {
+        initEntityLayer(null, layerName, centered);
     }
 
     /**
@@ -106,11 +105,10 @@ public class TileMapper {
      * @param entity    Object that should get directly bound to the {@link LocatedEntity}
      * @param layerName Name of the layer within the Tiled map
      * @param centered  Should the object be located in the middle of the tile, otherwise it will be located in the bottom left
-     * @param entity    Entity to be drawn
      */
     @SuppressWarnings("WeakerAccess")
-    public void buildEntityLayer(BodyProvider entity, String layerName, boolean centered) {
-        entities.build(tiledMap, layerName, entity, tileCountWidth, tileCountHeight, tileSize, centered);
+    public void initEntityLayer(BodyProvider entity, String layerName, boolean centered) {
+        entities.init(tiledMap, entity, layerName, tileCountWidth, tileCountHeight, tileSize, centered);
     }
 
     /**
@@ -118,8 +116,8 @@ public class TileMapper {
      *
      * @param world World which should be the parent of the entity.
      */
-    public void addEntityLayer(World world) {
-        entities.add(world);
+    public void createEntityLayer(World world) {
+        entities.create(world);
     }
 
     /**
@@ -160,7 +158,8 @@ public class TileMapper {
     }
 
     /**
-     * Remove a layer of entities
+     * Removes a layer of entities, will not clear the Box2D objects on the map. For an intrusive object
+     * removal use destroyLayer().
      *
      * @param layerName The Layer which should get removed
      */
@@ -169,13 +168,35 @@ public class TileMapper {
     }
 
     /**
-     * Remove an entity
+     * Removes an entity, will not clear the Box2D object on the map. For an intrusive object
+     * removal use destroyEntity().
      *
      * @param locatedEntity The entity which should get removed
      */
     public void removeEntity(LocatedEntity locatedEntity) {
         entities.removeEntity(locatedEntity);
     }
+
+    /**
+     * Removes and destroys a layer of entities, will also clear the Box2D objects on the map. For a non intrusive object
+     * removal use removeLayer()
+     *
+     * @param layerName The Layer which should get removed and destroyed
+     */
+    public void destroyLayer(String layerName) {
+        entities.destroyLayer(world, layerName);
+    }
+
+    /**
+     * Removes and destroys an entity, will also clear the Box2D object on the map. For a non intrusive object
+     * removal use removeEntity()
+     *
+     * @param locatedEntity The entity which should get removed and destroyed
+     */
+    public void destroyEntity(LocatedEntity locatedEntity) {
+        entities.destroyEntity(world, locatedEntity);
+    }
+
 
     /**
      * Get a {@link TiledMapTileLayer}
