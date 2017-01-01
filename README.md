@@ -1,5 +1,5 @@
 # MapMyTiles
-Easily use your **Tiled** maps in **libgdx** to create new levels without a hassle.
+Easily use your **Tiled** maps in **libgdx** combined with **Box2D** to create new levels without a hassle.
 
 ## How to use
 
@@ -23,13 +23,13 @@ Add to your project build.gradle file.
 
 ```
 dependencies {
-	compile 'com.github.Boehrsi:MapMyTiles:0.2.1'
+	compile 'com.github.Boehrsi:MapMyTiles:0.5.0'
 }
 ```
 
 ### JavaDocs
 
-https://jitpack.io/com/github/boehrsi/mapmytiles/0.2.1/javadoc/
+https://jitpack.io/com/github/boehrsi/mapmytiles/0.5.0/javadoc/
 
 ## Features
 
@@ -42,3 +42,4 @@ https://jitpack.io/com/github/boehrsi/mapmytiles/0.2.1/javadoc/
 ## Links
  * [Tiled Map Editor](http://www.mapeditor.org/) - Your free, easy to use and flexible tile map editor. 
  * [libGDX](https://libgdx.badlogicgames.com/) - Desktop/Android/BlackBerry/iOS/HTML5 Java game development framework
+ * [Box2D](http://box2d.org/) - A 2D Physics Engine for Games
