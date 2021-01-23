@@ -1,3 +1,6 @@
+# Status
+This repository is now archived and won't be developed any further, as I stopped to do game development for the time being.
+
 # MapMyTiles
 Easily use your **Tiled** maps in **libgdx** combined with **Box2D** to create new levels without a hassle.
 
